@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCrop AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --agri-green: #2c5e3b; --agri-light: #f4f6f0; }
+        body { background-color: var(--agri-light); font-family: sans-serif; }
+        .bg-agri { background-color: var(--agri-green) !important; }
+        .text-agri { color: var(--agri-green) !important; }
+        .btn-agri { background-color: var(--agri-green); color: white; border: none; }
+        .card-custom { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-agri shadow sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}"><i class="fa-solid fa-leaf me-2"></i> SmartCrop AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url_for('dashboard') }}"><i class="fa-solid fa-gauge me-1"></i> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url_for('market_rates') }}"><i class="fa-solid fa-chart-line me-1"></i> Market Prices</a></li>
+                        <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url_for('disease_detection') }}"><i class="fa-solid fa-seedling me-1"></i> Disease Detection</a></li>
+                        <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url_for('ai_assistant') }}"><i class="fa-solid fa-robot me-1"></i> AI Assistant</a></li>
+                        
+                        <li class="nav-item dropdown px-2">
+                            <a class="nav-link dropdown-toggle btn btn-outline-light btn-sm text-white px-3 rounded-pill" href="#" id="globalLangDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-language me-1"></i> {% if session.get('lang', 'en') == 'en' %}English{% else %}தமிழ் (Tamil){% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="globalLangDropdown">
+                                <li><a class="dropdown-item {% if session.get('lang', 'en') == 'en' %}active bg-success{% endif %}" href="#" onclick="executeGlobalLanguageSwitch('en')">English</a></li>
+                                <li><a class="dropdown-item {% if session.get('lang', 'en') == 'ta' %}active bg-success{% endif %}" href="#" onclick="executeGlobalLanguageSwitch('ta')">தமிழ் (Tamil)</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item"><a class="btn btn-danger btn-sm rounded-pill px-3 text-white ms-2" href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-white fw-bold px-3" href="{{ url_for('login') }}"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container my-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function executeGlobalLanguageSwitch(targetLangCode) {
+            fetch('/toggle_lang_ajax', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({lang: targetLangCode})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') { 
+                    window.location.reload(); 
+                }
+            })
+            .catch(err => console.error('Language Switch Failure Event Error Context:', err));
+        }
+    </script>
+</body>
+</html>

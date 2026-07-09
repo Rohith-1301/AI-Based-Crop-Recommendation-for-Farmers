@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-4 border shadow-sm position-relative overflow-hidden">
+    <div class="container-fluid py-5 position-relative z-1">
+        <h1 class="display-4 fw-bold text-agri">Empowering Agriculture Through Artificial Intelligence</h1>
+        <p class="col-md-8 fs-4 text-secondary">Maximize yields, neutralize plant disease vectors, and leverage production predictive modeling analytics inside a unified workspace optimized for contemporary growers.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('register') }}" class="btn btn-agri lg px-5 py-3 rounded-pill fw-bold shadow-sm">Initialize Enterprise Node</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-secondary lg px-4 py-3 rounded-pill ms-2">Access Portal</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

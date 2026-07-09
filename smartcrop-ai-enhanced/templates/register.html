@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-custom border-0 shadow p-4 bg-white">
+            <h2 class="text-center text-agri fw-bold mb-4"><i class="fa-solid fa-user-plus me-2"></i>Farmer Onboarding Configuration</h2>
+            <form method="POST" action="{{ url_for('register') }}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Full Name</label>
+                        <input type="text" name="fullname" class="form-control" required placeholder="John Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Username</label>
+                        <input type="text" name="username" class="form-control" required placeholder="farmer1">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input type="email" name="email" class="form-control" required placeholder="farmer@crop.com">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Mobile Phone</label>
+                        <input type="text" name="mobile" class="form-control" required placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Password</label>
+                        <input type="password" name="password" class="form-control" required placeholder="••••••••">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" required placeholder="••••••••">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">District</label>
+                        <input type="text" name="district" class="form-control" required placeholder="Coimbatore">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">State</label>
+                        <input type="text" name="state" class="form-control" required placeholder="Tamil Nadu">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Language Interface Target</label>
+                        <select name="language" class="form-select">
+                            <option value="en">English</option>
+                            <option value="ta">Tamil (தமிழ்)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Total Farm Area (Acres)</label>
+                        <input type="number" step="any" name="farm_size" class="form-control" required placeholder="5.5">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-agri w-100 py-2 mt-4 rounded-pill fw-bold shadow-sm">Execute Secure Registration System Pipeline</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

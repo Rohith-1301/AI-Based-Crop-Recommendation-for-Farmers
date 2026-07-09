@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-custom p-5 border-0 bg-white text-center shadow">
+            <div class="text-danger mb-3"><i class="fa-solid fa-cloud-arrow-up fa-4x"></i></div>
+            <h2 class="fw-bold mb-3">Foliage Computer Vision Diagnostic Pipeline</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <input type="file" name="file" class="form-control form-control-lg border-danger" required accept="image/*">
+                </div>
+                <div class="row g-3 mb-4 text-start">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Target Farm Workspace Area Metrics</label>
+                        <input type="number" step="any" name="area" class="form-control" value="1" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Scale System Bounds Unit</label>
+                        <select name="unit" class="form-select">
+                            <option value="acres">Acres</option>
+                            <option value="hectares">Hectares</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 py-3 rounded-pill fw-bold shadow-sm">Execute Matrix Preprocessing & Inferencing</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

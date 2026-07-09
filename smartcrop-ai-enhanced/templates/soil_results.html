@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card card-custom text-center p-5 border-0 bg-white shadow">
+    <h2 class="text-muted text-uppercase tracking-wider small">Prediction Engine Classification Result Output</h2>
+    <h1 class="display-3 fw-bold text-success my-3">{{ crop }}</h1>
+    <h4 class="text-secondary mb-4">Statistical Model Precision Confidence Limit Match Value: <strong>{{ confidence }}%</strong></h4>
+    <div class="text-start bg-light p-4 rounded-3 max-w-lg mx-auto">
+        <p><i class="fa-solid fa-vial text-success me-2"></i><strong>Biochemistry Substrate Remediation Path:</strong> {{ report.fertilizer }}</p>
+        <p><i class="fa-solid fa-droplet text-primary me-2"></i><strong>Hydration Pipeline Volumetric Schedule Strategy:</strong> {{ report.irrigation }}</p>
+    </div>
+    <a href="{{ url_for('soil_analysis') }}" class="btn btn-outline-success mt-4 rounded-pill px-4">Run Next Chemistry Sample Pipeline Analysis</a>
+</div>
+{% endblock %}

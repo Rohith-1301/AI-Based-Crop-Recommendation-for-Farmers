@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom border-0 bg-white p-4 shadow">
+            <h3 class="fw-bold text-agri mb-3"><i class="fa-solid fa-flask me-2"></i>Substrate Biochemistry Core Analytics Form</h3>
+            <form method="POST">
+                <div class="row g-3">
+                    <div class="col-md-4"><label class="form-label font-monospace small">Nitrogen (N)</label><input type="number" step="any" name="n" class="form-control" required placeholder="mg/kg"></div>
+                    <div class="col-md-4"><label class="form-label font-monospace small">Phosphorus (P)</label><input type="number" step="any" name="p" class="form-control" required placeholder="mg/kg"></div>
+                    <div class="col-md-4"><label class="form-label font-monospace small">Potassium (K)</label><input type="number" step="any" name="k" class="form-control" required placeholder="mg/kg"></div>
+                    <div class="col-md-6"><label class="form-label font-monospace small">Substrate pH Index</label><input type="number" step="any" name="ph" class="form-control" required placeholder="0-14"></div>
+                    <div class="col-md-6"><label class="form-label font-monospace small">Ambient Heat Metrics (°C)</label><input type="number" step="any" name="temperature" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label font-monospace small">Relative Humidity (%)</label><input type="number" step="any" name="humidity" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label font-monospace small font-weight-bold text-dark">Precipitation Threshold (mm)</label><input type="number" step="any" name="rainfall" class="form-control" required></div>
+                </div>
+                <button type="submit" class="btn btn-agri w-100 py-3 mt-4 rounded-pill fw-bold">Compute Random Forest Vector Recommendations</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

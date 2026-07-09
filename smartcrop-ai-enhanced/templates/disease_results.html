@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-custom border-0 p-4 bg-white shadow-sm">
+            <div class="text-center mb-4">
+                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold mb-2">Scan Analysis Complete</span>
+                <h2 class="fw-bold text-dark">{{ disease }}</h2>
+                <p class="text-muted">Prediction Confidence Match: <strong class="text-success">{{ confidence }}</strong></p>
+            </div>
+            
+            <div class="mb-4 text-center">
+                <img src="{{ url_for('static', filename='uploads/' + img_name) }}" class="img-fluid rounded-3 shadow-sm" style="max-height: 300px; object-fit: cover;" alt="Scanned Crop Leaf">
+            </div>
+
+            <div class="p-3 bg-light rounded-3 mb-3">
+                <h5 class="fw-bold text-agri"><i class="fa-solid fa-circle-info me-2"></i>{% if lang == 'en' %}Condition Diagnosis Description{% else %}நோய் கண்டறிதல் விளக்கம்{% endif %}</h5>
+                <p class="mb-0 text-secondary">{{ meta.desc }}</p>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 mb-3">
+                <h5 class="fw-bold text-warning"><i class="fa-solid fa-triangle-exclamation me-2"></i>{% if lang == 'en' %}Identified Leaf Symptoms{% else %}இலையின் அறிகுறிகள்{% endif %}</h5>
+                <p class="mb-0 text-secondary">{{ meta.symptoms }}</p>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 mb-4">
+                <h5 class="fw-bold text-danger"><i class="fa-solid fa-prescription-bottle-medical me-2"></i>{% if lang == 'en' %}Prescribed Care & Treatment Measures{% else %}பரிந்துரைக்கப்படும் சிகிச்சை முறைகள்{% endif %}</h5>
+                <p class="mb-1 text-dark fw-bold"><strong>{% if lang == 'en' %}Recommended Application{% else %}பரிந்துரைக்கப்படும் மருந்து{% endif %}:</strong> {{ meta.pesticide }}</p>
+                <p class="mb-0 text-secondary"><strong>{% if lang == 'en' %}Field Action Plan{% else %}செயல் திட்டம்{% endif %}:</strong> {{ meta.treatment }}</p>
+            </div>
+
+            <div class="text-center">
+                <a href="{{ url_for('disease_detection') }}" class="btn btn-agri px-4 py-2 fw-bold rounded-pill">
+                    <i class="fa-solid fa-arrow-left me-2"></i>{% if lang == 'en' %}Scan Another Crop Leaf{% else %}மற்றொரு இலையை ஸ்கேன் செய்க{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

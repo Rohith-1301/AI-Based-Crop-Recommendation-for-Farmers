@@ -1,0 +1,2 @@
+{% extends "base.html" %}
+{% block content %}<div class="card card-custom p-4 bg-white border-0 shadow"><h3><i class="fa-solid fa-comments me-2"></i>LLM Conversation Context Index Tree</h3><hr><div class="list-group">{% for s in sessions %}<a href="#" class="list-group-item list-group-item-action fw-semibold text-agri">{{ s.title }} - {{ s.date }}</a>{% endfor %}</div></div>{% endblock %}

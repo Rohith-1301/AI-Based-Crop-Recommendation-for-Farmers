@@ -1,0 +1,143 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card card-custom border-0 shadow bg-white d-flex flex-column" style="height: 650px;">
+            <div class="card-header bg-agri text-white p-3 d-flex justify-content-between align-items-center rounded-top-4">
+                <h5 class="mb-0 fw-bold"><i class="fa-solid fa-robot me-2"></i>SmartCrop AI Assistant</h5>
+                <div>
+                    <button class="btn btn-sm btn-outline-light me-2" id="toggleLangBtn" onclick="switchLanguage('{{ lang }}')">
+                        <i class="fa-solid fa-language"></i> Change to {% if lang == 'en' %}தமிழ்{% else %}English{% endif %}
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-body bg-light flex-grow-1 overflow-y-auto p-4" id="chatArea">
+                {% for message in conversation %}
+                    <div class="d-flex mb-3 {% if message.role == 'user' %}justify-content-end{% endif %}">
+                        <div class="p-3 rounded-3 shadow-sm max-w-75 {% if message.role == 'user' %}bg-success text-white{% else %}bg-white text-dark{% endif %}" style="white-space: pre-wrap;">
+                            {{ message.message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="card-footer bg-white border-0 p-3 rounded-bottom-4">
+                <div class="input-group">
+                    <button class="btn btn-outline-danger" type="button" id="voiceBtn" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></button>
+                    <input type="text" id="userInputField" class="form-control p-3 bg-light" placeholder="Ask about crops, soils, diseases or enter 'Recommend Crop'...">
+                    <button class="btn btn-agri px-4" type="button" onclick="transmitMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatArea = document.getElementById('chatArea');
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    function switchLanguage(current) {
+        let target = current === 'en' ? 'ta' : 'en';
+        fetch('/toggle_lang_ajax', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({lang: target})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.reload();
+            }
+        });
+    }
+
+    function startVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) { 
+            alert("Voice interface drivers not supported by your browser software."); 
+            return; 
+        }
+        
+        const reco = new SpeechRecognition();
+        
+        // DUAL-LANGUAGE SPEECH ANALYSIS CONFIGURATION PATTERN
+        // Switches dynamically between Indian Accent English or Regional Slate Tamil based on interface configurations
+        const currentLang = "{{ lang }}";
+        if (currentLang === 'ta') {
+            reco.lang = 'ta-IN';
+        } else {
+            reco.lang = 'en-IN'; 
+        }
+        
+        reco.continuous = false;
+        reco.interimResults = false;
+
+        const voiceBtn = document.getElementById('voiceBtn');
+        voiceBtn.innerHTML = '<i class="fa-solid fa-circle-dot text-blink text-danger"></i>';
+        voiceBtn.classList.add('listening-active');
+        console.log(`Microphone capture routing pipeline bound to language variant profile: ${reco.lang}`);
+        
+        reco.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('userInputField').value = transcript;
+            resetVoiceButtonState();
+        };
+
+        reco.onerror = (err) => { 
+            console.error("Speech Recognition capture interrupt detected:", err.error);
+            resetVoiceButtonState(); 
+        };
+
+        reco.onend = () => { 
+            resetVoiceButtonState(); 
+        };
+
+        function resetVoiceButtonState() {
+            voiceBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
+            voiceBtn.classList.remove('listening-active');
+        }
+
+        reco.start();
+    }
+
+    function transmitMessage() {
+        const txt = document.getElementById('userInputField').value.trim();
+        if(!txt) return;
+
+        // Display user text message immediately
+        chatArea.innerHTML += `<div class="d-flex mb-3 justify-content-end"><div class="p-3 rounded-3 shadow-sm max-w-75 bg-success text-white" style="white-space: pre-wrap;">${txt}</div></div>`;
+        document.getElementById('userInputField').value = '';
+        chatArea.scrollTop = chatArea.scrollHeight;
+
+        fetch('/ai_assistant', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: txt})
+        })
+        .then(res => res.json())
+        .then(data => {
+            chatArea.innerHTML += `<div class="d-flex mb-3"><div class="p-3 rounded-3 shadow-sm max-w-75 bg-white text-dark" style="white-space: pre-wrap;">${data.response}</div></div>`;
+            chatArea.scrollTop = chatArea.scrollHeight;
+        })
+        .catch(err => {
+            console.error("Transmission stack failure payload analysis:", err);
+        });
+    }
+</script>
+
+<style>
+    /* Continuous pulse indicator animation logic context for microphone recording states */
+    .text-blink {
+        animation: blinker 1.2s linear infinite;
+    }
+    @keyframes blinker {
+        50% { opacity: 0.2; }
+    }
+    .listening-active {
+        border-color: #dc3545 !important;
+        background-color: #f8d7da !important;
+    }
+</style>
+{% endblock %}
